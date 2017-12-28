@@ -1,9 +1,11 @@
 package com.ibanyi.fileservice.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * Created by pjj on 2017/12/28.
  * <p>
- * 用于获取图片的完整路径
+ * 保存文件或者获取文件完整路径
  */
 public interface FileService {
 
@@ -15,4 +17,11 @@ public interface FileService {
      */
     String getAvatarImagePath(String fileName);
 
+    /**
+     * 保存用户头像
+     *
+     * @param avatar
+     * @return 返回保存的路径
+     */
+    String saveAvatarImage(MultipartFile avatar);
 }
