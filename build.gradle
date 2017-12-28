@@ -1,0 +1,57 @@
+buildscript {
+	ext {
+		springBootVersion = '1.4.7.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+		maven { url 'http://repo.spring.io/plugins-release' }
+	}
+	dependencies {
+		classpath 'io.spring.gradle:propdeps-plugin:0.0.9.RELEASE'
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+group = 'com.ibanyi.fileservice'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	springCloudVersion = 'Camden.SR7'
+}
+
+configure(allprojects) {
+	apply plugin: 'propdeps'
+	apply plugin: 'propdeps-maven'
+	apply plugin: 'propdeps-idea'
+	apply plugin: 'propdeps-eclipse'
+}
+compileJava.dependsOn(processResources)
+
+dependencies {
+	compile('org.springframework.cloud:spring-cloud-starter-eureka')
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	compile('org.springframework.cloud:spring-cloud-starter-feign')
+
+	optional "org.springframework.boot:spring-boot-configuration-processor"
+
+	compile('io.zipkin.brave:brave-core:3.9.0')
+	compile('io.zipkin.brave:brave-http:3.9.0')
+	compile('io.zipkin.brave:brave-spancollector-http:3.9.0')
+	compile('io.zipkin.brave:brave-web-servlet-filter:3.9.0')
+	compile('io.zipkin.brave:brave-okhttp:3.9.0')
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
